@@ -1,18 +1,33 @@
 import axios from "axios";
-
-import { useState } from 'react'
 import './App.css'
+import { useEffect, useState } from 'react'
+import Card from "./assets/components/Card";
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [actors, setActors] = useState([]);
 
-  axios.get("https://lanciweb.github.io/demo/api/actors/").then
-    ((resp) => {
-      console.log(resp);
-    })
+  useEffect(() => {
+    axios.get("https://lanciweb.github.io/demo/api/actors/").then
+      ((resp) => {
+        setActors(resp.data)
+        console.log(resp.data);
+      });
+  }, []);
 
   return (
     <>
+      <div className="container py-5">
+        <h1>my actors</h1>
+        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+          {actors.map((actor) => (
+            <div className="col" key={actor.id}>
+             <Card actor={actor}/>
+            </div>
+          ))}
+
+        </div>
+      </div>
     </>
   )
 }
